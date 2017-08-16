@@ -3,7 +3,7 @@
 		<el-button class="sun_choose" size="small" type="primary" @click="dialogVisible = true">从图片空间选择</el-button>
 		<el-upload
 		  	class="sun_upload-demo sun_a_none"
-			action="http://v20-dev2.shunliandongli.com/uploads/uploadimage" 
+			:action="imgAction" 
 		  	:on-success="handlePreview"
 		  	:on-remove="handleRemove"
 		  	with-credentials
@@ -11,7 +11,6 @@
 		  	show-file-list
 		  	list-type="picture">
 		  <el-button size="small" type="primary">点击上传</el-button>
-		  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 		</el-upload>
 		
 
@@ -29,7 +28,7 @@
 
 				<el-upload
 				  	class="sun_shangc"
-					action="http://v20-dev2.shunliandongli.com/uploads/uploadimage" 
+					:action="imgAction" 
 				  	with-credentials
 				  	:data="img_success_data"
 				  	:on-success="img_success"
@@ -116,6 +115,9 @@ export default{
 			imgArr:[]
 		};
 	},
+	props:{
+		imgAction:String
+	},
 	computed:{
 		total:function(){
 			let num = Math.ceil(this.total_count/this.pagesize)*10;
@@ -128,7 +130,7 @@ export default{
 			// console.log(file, fileList);
 		},
 		handlePreview(response, file, fileList) {
-			console.log(response)
+			//console.log(response,1)
 			let url = response.data.domain+response.data.relativePath[0]
 			let img_obj={
 				url:response.data.domain+response.data.relativePath[0]
@@ -164,9 +166,9 @@ export default{
 			})
 		},
 		getAlbumimagelist(){
-			console.log(this.img_success_data.album_id)
+			//console.log(this.img_success_data.album_id)
 			axios.post("http://v20-dev2.shunliandongli.com/product/albumimagelist",{"page": this.page,"pagesize": 15,"album_id": this.img_success_data.album_id}).then((response) => {
-				console.log(response)
+				//console.log(response)
 				this.imgList=response.data.data.list;
 				this.pagesize=response.data.data.pagesize;
 				this.total_count=response.data.data.total_count;
@@ -205,7 +207,7 @@ export default{
 		},
 		chooseImg(event,index){
 			this.choose_arr.push(index)
-			console.log(event)
+			//console.log(event)
 			let img_obj={
 				url:event.target.currentSrc
 			}
